@@ -42,7 +42,7 @@ public class Database {
         return null;
     }
 
-    private void saveToDatabase() {
+    public void saveToDatabase() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(databaseFile))) {
             oos.writeObject(accountList);
         } catch (IOException e) {
