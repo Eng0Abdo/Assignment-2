@@ -36,6 +36,10 @@ public class Account implements Serializable {
     }
 
     public void displayLinkedBankAccounts() {
+        if(linkedBankAccounts.size() <= 0) {
+            System.out.println("No bank accounts linked!");
+            return;
+        }
         System.out.println("\nLinked Bank Accounts for " + username + ":");
         for(int i = 0; i < linkedBankAccounts.size(); i++) {
             BankAccount acc = linkedBankAccounts.get(i);
