@@ -20,6 +20,9 @@ public class Application {
                 case 2:
                     login();
                     break;
+                case 3:
+                    createBankAccount();
+                    break;
                 default:
                     break;
 
@@ -34,13 +37,14 @@ public class Application {
         System.out.println("\n--- Welcome to the Investment App ---");
         System.out.println("1. Sign Up");
         System.out.println("2. Log In");
+        System.out.println("3. Create Bank Account");
         System.out.print("Please enter your choice: ");
 
         try {
             choice = sc.nextInt();
         } catch (InputMismatchException e) {
             System.out.println("Invalid input. Please enter a number.");
-            sc.nextLine(); // clear invalid input
+            sc.nextLine();
         }
 
         return choice;
@@ -53,7 +57,9 @@ public class Application {
 
         System.out.println("\n--- Main Menu ---");
         System.out.println("1. Go to Dashboard");
-        System.out.println("2. Log Out");
+        System.out.println("2. Link bank account");
+        System.out.println("3. Display linked bank accounts");
+        System.out.println("4. Log Out");
         System.out.print("Select an option: ");
 
         try {
@@ -76,6 +82,7 @@ public class Application {
         System.out.println("3. Edit Asset");
         System.out.println("4. Remove Asset");
         System.out.println("5. Zakat Calculation");
+
         System.out.print("Select a service (-1 to quit): ");
 
         try {
@@ -123,6 +130,12 @@ public class Application {
                     dashboardPanel();
                     break;
                 case 2:
+                    linkBankAccount();
+                    break;
+                case 3:
+                    displayLinkedBankAccounts();
+                    break;
+                case 4:
                     screen.logOut();
                     break;
                 default:
@@ -167,6 +180,45 @@ public class Application {
 
     }
 
+    public void displayLinkedBankAccounts(){
+        screen.getCurrentAccount().displayLinkedBankAccounts();
+    }
+
+    public void linkBankAccount() {
+        sc.nextLine();
+        System.out.print("Enter your card number: ");
+        String cardNumber = sc.nextLine();
+
+        BankAccount account = screen.getBankDatabase().getBankAccount(cardNumber);
+
+        if (account == null) {
+            System.out.println("Bank account not found in the database!");
+            return;
+        }
+        for (BankAccount linked : screen.getCurrentAccount().getLinkedBankAccounts()) {
+            if (linked.getCardNumber().equals(cardNumber)) {
+                System.out.println("This bank account is already linked.");
+                return;
+            }
+        }
+
+        System.out.print("Enter the cardholder name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter CVV: ");
+        String cvv = sc.nextLine();
+
+        if (account.getCardHolderName().equalsIgnoreCase(name.trim()) &&
+                account.getCvv().equals(cvv.trim())) {
+
+            screen.getCurrentAccount().linkBankAccount(account);
+        } else {
+            System.out.println("Verification failed! Provided details do not match the bank account.");
+        }
+    }
+
+
+
     public void ZakatCalculation(Portfolio portfolio) {
         System.out.println("\nZakat Calculation: ");
         System.out.println(portfolio.calculateZakat());
@@ -188,10 +240,7 @@ public class Application {
         System.out.print("Enter asset type (e.g., 'Stock', 'Real Estate'): ");
         String type = sc.nextLine();
 
-        System.out.print("Enter asset amount (e.g., 100): ");
-        double assetAmount = Double.parseDouble(sc.nextLine());
-
-        portfolio.addAsset(assetName, purchasePrice, currentValue, type, assetAmount);
+        portfolio.addAsset(assetName, purchasePrice, currentValue, type);
         System.out.println("Asset added successfully!");
 
     }
@@ -235,19 +284,10 @@ public class Application {
             return;
         }
 
-        System.out.print("Enter new amount value: ");
-        double newAmount;
-        try {
-            newAmount = Double.parseDouble(sc.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid amount value. Operation cancelled.");
-            return;
-        }
-
         System.out.print("Enter new asset type: ");
         String type = sc.nextLine();
 
-        portfolio.editAsset(assetName, purchasePrice, currentValue, type, assetID, newAmount);
+        portfolio.editAsset(assetName, purchasePrice, currentValue, type, assetID);
         System.out.println("Asset updated successfully.");
     }
 
@@ -274,14 +314,34 @@ public class Application {
         System.out.println("Asset removed successfully.");
     }
 
+    private void createBankAccount() {
+        sc.nextLine();
+        System.out.print("Enter bank name: ");
+        String bankName = sc.nextLine();
 
-    private void allocationPanel(){
+        System.out.print("Enter card number (16 digits): ");
+        String cardNumber = sc.nextLine();
+
+        System.out.print("Enter card holder name: ");
+        String cardHolderName = sc.nextLine();
+
+        System.out.print("Enter expiry date (MM/YY): ");
+        String expiryDate = sc.nextLine();
+
+        System.out.print("Enter CVV: ");
+        String cvv = sc.nextLine();
+
+        BankAccount account = new BankAccount(bankName, cardNumber, cardHolderName, expiryDate, cvv);
+
+        if (account.validateCard()) {
+            System.out.println("Bank account created successfully!");
+            screen.getBankDatabase().addBankAccount(account);
+        } else {
+            System.out.println("Invalid card details. Please try again.");
+        }
 
     }
 
-    private void zakatCompliancePanel(){
-
-    }
 
     
 }
