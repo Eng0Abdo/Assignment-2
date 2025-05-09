@@ -20,7 +20,7 @@ public class Screen {
             currentAccount = database.getAccount(username,password);
             return true;
         } else {
-            System.out.println("Account doesn't exist\n");
+            System.out.println("Incorrect username or password\n");
             return false;
         }
 
@@ -48,6 +48,14 @@ public class Screen {
         currentAccount = null;
 
 
+    }
+
+    Account getCurrentAccount(){
+        return currentAccount;
+    }
+
+    public Database getDatabase(){
+        return database;
     }
 
 
