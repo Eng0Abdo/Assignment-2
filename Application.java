@@ -60,7 +60,7 @@ public class Application {
             page = sc.nextInt();
         } catch (InputMismatchException e) {
             System.out.println("Invalid input. Please enter a number.");
-            sc.nextLine(); // clear invalid input
+            sc.nextLine();
         }
 
         return page;
@@ -75,13 +75,14 @@ public class Application {
         System.out.println("2. Add Asset");
         System.out.println("3. Edit Asset");
         System.out.println("4. Remove Asset");
+        System.out.println("5. Zakat Calculation");
         System.out.print("Select a service (-1 to quit): ");
 
         try {
             choice = sc.nextInt();
         } catch (InputMismatchException e) {
             System.out.println("Invalid input. Please enter a number.");
-            sc.nextLine(); // clear the invalid input
+            sc.nextLine();
         }
 
         return choice;
@@ -151,6 +152,10 @@ public class Application {
                     removeAsset(portfolio);
                     break;
                 case 5:
+                    ZakatCalculation(portfolio);
+                    break;
+                default:
+                    System.out.println("Invalid option. Please choose again.");
                     break;
             }
             Database db = screen.getDatabase();
@@ -162,6 +167,11 @@ public class Application {
 
     }
 
+    public void ZakatCalculation(Portfolio portfolio) {
+        System.out.println("\nZakat Calculation: ");
+        System.out.println(portfolio.calculateZakat());
+    }
+
     private void addAsset(Portfolio portfolio){
         sc.nextLine();
         System.out.println("\n--- Add New Asset ---");
@@ -170,10 +180,10 @@ public class Application {
         String assetName = sc.nextLine();
 
         System.out.print("Enter purchase price: ");
-        double purchasePrice = Double.parseDouble(sc.nextLine()); // Convert string to double
+        double purchasePrice = Double.parseDouble(sc.nextLine());
 
         System.out.print("Enter current value: ");
-        double currentValue = Double.parseDouble(sc.nextLine()); // Convert string to double
+        double currentValue = Double.parseDouble(sc.nextLine());
 
         System.out.print("Enter asset type (e.g., 'Stock', 'Real Estate'): ");
         String type = sc.nextLine();
