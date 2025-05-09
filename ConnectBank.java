@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.util.Random;
 
-class BankAccount {
+ class BankAccount {
     private String bankName;
     private String cardNumber;
     private String cardHolderName;
@@ -17,17 +17,39 @@ class BankAccount {
     }
 
     public boolean validateCard() {
-        return cardNumber.length() == 16 && cvv.length() >= 3;
+        return cardNumber != null && cardNumber.length() == 16 && cvv != null && cvv.length() >= 3;
     }
 
+    // Getters
+    public String getBankName() {
+        return bankName;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public String getCardHolderName() {
+        return cardHolderName;
+    }
+
+    public String getExpiryDate() {
+        return expiryDate;
+    }
+
+    public String getCvv() {
+        return cvv;
+    }
 }
+
+
 
 class OTPService {
     private int otp;
 
     public void sendOTP() {
         otp = new Random().nextInt(900000) + 100000;
-        System.out.println("OTP sent: " + otp); // simulate sending
+        System.out.println("🔐 OTP sent: " + otp); // Simulate sending the OTP
     }
 
     public boolean verifyOTP(int inputOtp) {
