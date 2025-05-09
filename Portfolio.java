@@ -7,10 +7,8 @@ public class Portfolio implements Serializable {
 
     private Map<Integer, Asset> assets = new HashMap<>();
     private int nextAssetID = 0;
-    private double netWorth;
     private double riskScore;
     private double totalROI;
-    private double zakatCalculation;
     private double totalProfit;
 
     public void addAsset(String assetName, double purchasePrice, double currentValue, String type) {
@@ -29,12 +27,12 @@ public class Portfolio implements Serializable {
         assets.remove(assetID);
     }
 
-    public void calculateNetWorth() {
-        this.netWorth = assets.values().stream().mapToDouble(Asset::getAssetCurrentValue).sum();
+    public double calculateNetWorth() {
+        return assets.values().stream().mapToDouble(Asset::getAssetCurrentValue).sum();
     }
 
-    public void calculateZakat() {
-        zakatCalculation = .025 * netWorth;
+    public double calculateZakat() {
+        return .025 * calculateNetWorth();
     }
 
     public void listAssets() {
@@ -51,10 +49,7 @@ public class Portfolio implements Serializable {
     }
 
     public boolean assetExists(int assetID) {
-        if (!assets.containsKey(assetID)) {
-            return false;
-        }
-        return true;
+        return assets.containsKey(assetID);
     }
 
 
