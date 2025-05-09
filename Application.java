@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Application {
@@ -27,49 +28,230 @@ public class Application {
         }
     }
 
-    private int getChoice(){
+    private int getChoice() {
+        int choice = -1;
 
+        System.out.println("\n--- Welcome to the Investment App ---");
+        System.out.println("1. Sign Up");
+        System.out.println("2. Log In");
+        System.out.print("Please enter your choice: ");
 
+        try {
+            choice = sc.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            sc.nextLine(); // clear invalid input
+        }
+
+        return choice;
     }
 
-    private int getPage(){
 
+    private int getPage() {
+
+        int page = -1;
+
+        System.out.println("\n--- Main Menu ---");
+        System.out.println("1. Go to Dashboard");
+        System.out.println("2. Log Out");
+        System.out.print("Select an option: ");
+
+        try {
+            page = sc.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            sc.nextLine(); // clear invalid input
+        }
+
+        return page;
     }
 
-    private void signup(){
-        String username;
-        String password;
-        String confirmPassword;
-        username = sc.nextLine();
-        password = sc.nextLine();
-        confirmPassword = sc.nextLine();
+
+    private int getService() {
+        int choice = -1;
+
+        System.out.println("\n--- Dashboard Menu ---");
+        System.out.println("1. List Assets");
+        System.out.println("2. Add Asset");
+        System.out.println("3. Edit Asset");
+        System.out.println("4. Remove Asset");
+        System.out.print("Select a service (-1 to quit): ");
+
+        try {
+            choice = sc.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            sc.nextLine(); // clear the invalid input
+        }
+
+        return choice;
+    }
+
+
+    private void signup() {
+        sc.nextLine();
+        System.out.println("\n--- Create a New Account ---");
+        System.out.print("Enter a username: ");
+        String username = sc.nextLine();
+
+        System.out.print("Enter a password: ");
+        String password = sc.nextLine();
+
+        System.out.print("Confirm your password: ");
+        String confirmPassword = sc.nextLine();
+
         screen.signUp(username, password, confirmPassword);
     }
 
-    private void login(){
+
+    private void login() {
+        sc.nextLine();
+        System.out.println("\n--- Log In ---\n");
+        System.out.print("Enter your username: ");
         String username = sc.nextLine();
+
+        System.out.print("Enter your password: ");
         String password = sc.nextLine();
+
         screen.logIn(username, password);
-        while (screen.isLoggedIn()){
+
+        while (screen.isLoggedIn()) {
             int page = getPage();
-            switch (page){
+            switch (page) {
                 case 1:
                     dashboardPanel();
                     break;
                 case 2:
                     screen.logOut();
-
-
-
+                    break;
+                default:
+                    System.out.println("Invalid option. Please choose again.");
             }
-
-
         }
     }
 
+
     private void dashboardPanel(){
 
+        int service = getService();
+        while (service != -1){
+            Portfolio portfolio = screen.getCurrentAccount().getPortfolio();
+
+            switch (service){
+                case 1:
+                    portfolio.listAssets();
+                    break;
+                case 2:
+                    addAsset(portfolio);
+                    break;
+                case 3:
+                    editAsset(portfolio);
+                    break;
+                case 4:
+                    removeAsset(portfolio);
+                    break;
+                case 5:
+                    break;
+            }
+            Database db = screen.getDatabase();
+            db.saveToDatabase();
+            service = getService();
+
+        }
+
+
     }
+
+    private void addAsset(Portfolio portfolio){
+        sc.nextLine();
+        System.out.println("\n--- Add New Asset ---");
+
+        System.out.print("Enter asset name: ");
+        String assetName = sc.nextLine();
+
+        System.out.print("Enter purchase price: ");
+        double purchasePrice = Double.parseDouble(sc.nextLine()); // Convert string to double
+
+        System.out.print("Enter current value: ");
+        double currentValue = Double.parseDouble(sc.nextLine()); // Convert string to double
+
+        System.out.print("Enter asset type (e.g., 'Stock', 'Real Estate'): ");
+        String type = sc.nextLine();
+
+        portfolio.addAsset(assetName, purchasePrice, currentValue, type);
+        System.out.println("Asset added successfully!");
+
+    }
+
+    private void editAsset(Portfolio portfolio) {
+        sc.nextLine();
+        System.out.println("\n--- Edit Asset ---");
+
+        System.out.print("Enter the Asset ID to edit: ");
+        int assetID;
+        try {
+            assetID = Integer.parseInt(sc.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid asset ID. Operation cancelled.");
+            return;
+        }
+
+        if (!portfolio.assetExists(assetID)) {
+            System.out.println("No asset found with ID " + assetID);
+            return;
+        }
+
+        System.out.print("Enter new asset name: ");
+        String assetName = sc.nextLine();
+
+        System.out.print("Enter new purchase price: ");
+        double purchasePrice;
+        try {
+            purchasePrice = Double.parseDouble(sc.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid purchase price. Operation cancelled.");
+            return;
+        }
+
+        System.out.print("Enter new current value: ");
+        double currentValue;
+        try {
+            currentValue = Double.parseDouble(sc.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid current value. Operation cancelled.");
+            return;
+        }
+
+        System.out.print("Enter new asset type: ");
+        String type = sc.nextLine();
+
+        portfolio.editAsset(assetName, purchasePrice, currentValue, type, assetID);
+        System.out.println("Asset updated successfully.");
+    }
+
+    private void removeAsset(Portfolio portfolio) {
+
+        sc.nextLine();
+        System.out.println("\n--- Remove Asset ---");
+
+        System.out.print("Enter the Asset ID to remove: ");
+        int assetID;
+        try {
+            assetID = Integer.parseInt(sc.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Asset ID must be a number.");
+            return;
+        }
+
+        if (!portfolio.assetExists(assetID)) {
+            System.out.println("No asset found with ID " + assetID);
+            return;
+        }
+
+        portfolio.removeAsset(assetID);
+        System.out.println("Asset removed successfully.");
+    }
+
 
     private void allocationPanel(){
 
