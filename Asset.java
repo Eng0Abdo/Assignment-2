@@ -1,4 +1,5 @@
-class Asset {
+import java.io.Serializable;
+class Asset implements Serializable{
     private int assetID;
     private String assetName;
     private double assetPurchasePrice;
@@ -35,5 +36,16 @@ class Asset {
         this.assetPurchasePrice = assetPurchasePrice;
         this.assetCurrentValue = assetCurrentValue;
         this.assetType = assetType;
+    }
+
+    public void listAsset() {
+        System.out.println("----- Asset Summary -----");
+        System.out.println("Asset ID: " + assetID);
+        System.out.println("Name: " + assetName);
+        System.out.println("Type: " + assetType);
+        System.out.println("Purchase Price: " + assetPurchasePrice);
+        System.out.println("Current Value: " + assetCurrentValue);
+        System.out.println("Profit/Loss: " + (assetCurrentValue - assetPurchasePrice));
+        System.out.println("--------------------------");
     }
 }
