@@ -8,7 +8,7 @@ public class Account implements Serializable {
     private boolean isAdmin;
     private Portfolio portfolio;
     private List<BankAccount> linkedBankAccounts;
-    
+
     public Account(String username, String password, boolean isAdmin) {
         this.username = username;
         this.password = password;
@@ -39,8 +39,8 @@ public class Account implements Serializable {
         System.out.println("\nLinked Bank Accounts for " + username + ":");
         for(int i = 0; i < linkedBankAccounts.size(); i++) {
             BankAccount acc = linkedBankAccounts.get(i);
-            System.out.println((i+1) + ". " + acc.getBankName() + 
-                " - Card ending with: " + acc.getCardNumber().substring(12));
+            System.out.println((i+1) + ". " + acc.getBankName() +
+                    " - Card ending with: " + acc.getCardNumber().substring(12));
         }
     }
 }
