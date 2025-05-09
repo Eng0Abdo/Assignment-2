@@ -240,7 +240,10 @@ public class Application {
         System.out.print("Enter asset type (e.g., 'Stock', 'Real Estate'): ");
         String type = sc.nextLine();
 
-        portfolio.addAsset(assetName, purchasePrice, currentValue, type);
+        System.out.print("Enter asset Amount: ");
+        double amount = Double.parseDouble(sc.nextLine());
+
+        portfolio.addAsset(assetName, purchasePrice, currentValue, type, amount);
         System.out.println("Asset added successfully!");
 
     }
@@ -287,7 +290,16 @@ public class Application {
         System.out.print("Enter new asset type: ");
         String type = sc.nextLine();
 
-        portfolio.editAsset(assetName, purchasePrice, currentValue, type, assetID);
+        System.out.print("Enter new Asset Amount: ");
+        double newAmount;
+        try {
+            newAmount = Double.parseDouble(sc.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid amount. Operation cancelled.");
+            return;
+        }
+
+        portfolio.editAsset(assetName, purchasePrice, currentValue, type, assetID, newAmount);
         System.out.println("Asset updated successfully.");
     }
 

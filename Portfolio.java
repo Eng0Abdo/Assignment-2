@@ -11,16 +11,16 @@ public class Portfolio implements Serializable {
     private double totalROI;
     private double totalProfit;
 
-    public void addAsset(String assetName, double purchasePrice, double currentValue, String type) {
+    public void addAsset(String assetName, double purchasePrice, double currentValue, String type, double amount) {
         int assetID = nextAssetID;
         while (assets.containsKey(assetID)) {
             assetID++;
         }
-        assets.put(assetID, new Asset(assetName, purchasePrice, currentValue, type, assetID));
+        assets.put(assetID, new Asset(assetName, purchasePrice, currentValue, type, assetID, amount));
     }
 
-    public void editAsset(String assetName, double purchasePrice, double currentValue, String type, int assetID) {
-        assets.replace(assetID, new Asset(assetName, purchasePrice, currentValue, type, assetID));
+    public void editAsset(String assetName, double purchasePrice, double currentValue, String type, int assetID, double amount) {
+        assets.replace(assetID, new Asset(assetName, purchasePrice, currentValue, type, assetID, amount));
     }
 
     public void removeAsset(int assetID) {

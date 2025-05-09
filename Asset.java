@@ -5,13 +5,15 @@ class Asset implements Serializable{
     private double assetPurchasePrice;
     private double assetCurrentValue;
     private String assetType;
+    private double amount;
 
-    public Asset(String assetName, double assetPurchasePrice, double assetCurrentValue, String assetType, int assetID) {
+    public Asset(String assetName, double assetPurchasePrice, double assetCurrentValue, String assetType, int assetID, double amount) {
         this.assetName = assetName;
         this.assetPurchasePrice = assetPurchasePrice;
         this.assetCurrentValue = assetCurrentValue;
         this.assetID = assetID;
         this.assetType = assetType;
+        this.amount = amount;
     }
 
     public void getAssetDetails() {
@@ -20,6 +22,7 @@ class Asset implements Serializable{
         System.out.println("Asset Purchase Price: " + assetPurchasePrice);
         System.out.println("Asset Current Value: " + assetCurrentValue);
         System.out.println("Asset Type: " + assetType);
+        System.out.println("Asset Amount: " + amount);
 
     }
 
@@ -31,11 +34,12 @@ class Asset implements Serializable{
         return assetCurrentValue;
     }
 
-    public void editAssetDetails(String assetName, double assetPurchasePrice, double assetCurrentValue, String assetType) {
+    public void editAssetDetails(String assetName, double assetPurchasePrice, double assetCurrentValue, String assetType, double assetAmount) {
         this.assetName = assetName;
         this.assetPurchasePrice = assetPurchasePrice;
         this.assetCurrentValue = assetCurrentValue;
         this.assetType = assetType;
+        this.amount = assetAmount;
     }
 
     public void listAsset() {
@@ -45,6 +49,7 @@ class Asset implements Serializable{
         System.out.println("Type: " + assetType);
         System.out.println("Purchase Price: " + assetPurchasePrice);
         System.out.println("Current Value: " + assetCurrentValue);
+        System.out.println("Asset Amount: " + amount);
         System.out.println("Profit/Loss: " + (assetCurrentValue - assetPurchasePrice));
         System.out.println("--------------------------");
     }
