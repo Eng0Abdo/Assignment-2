@@ -11,16 +11,16 @@ public class Portfolio implements Serializable {
     private double totalROI;
     private double totalProfit;
 
-    public void addAsset(String assetName, double purchasePrice, double currentValue, String type, double amount) {
+    public void addAsset(String assetName, double purchasePrice, double currentValue, String type) {
         int assetID = nextAssetID;
         while (assets.containsKey(assetID)) {
             assetID++;
         }
-        assets.put(assetID, new Asset(assetName, purchasePrice, currentValue, type, assetID, amount));
+        assets.put(assetID, new Asset(assetName, purchasePrice, currentValue, type, assetID));
     }
 
-    public void editAsset(String assetName, double purchasePrice, double currentValue, String type, int assetID, double amount) {
-        assets.replace(assetID, new Asset(assetName, purchasePrice, currentValue, type, assetID, amount));
+    public void editAsset(String assetName, double purchasePrice, double currentValue, String type, int assetID) {
+        assets.replace(assetID, new Asset(assetName, purchasePrice, currentValue, type, assetID));
     }
 
     public void removeAsset(int assetID) {
@@ -36,20 +36,40 @@ public class Portfolio implements Serializable {
     }
 
     public void listAssets() {
-        if(assets.isEmpty()) {
+        if (assets.isEmpty()) {
             System.out.println("No assets to display\n");
             return;
+        }
+
+        System.out.println();
+        double maxValue = assets.values().stream()
+                .mapToDouble(asset -> asset.getAssetCurrentValue())
+                .max()
+                .orElse(1.0);
+
+        for (Map.Entry<Integer, Asset> entry : assets.entrySet()) {
+            Asset asset = entry.getValue();
+            asset.listAsset();
+
         }
         System.out.println();
         for (Map.Entry<Integer, Asset> entry : assets.entrySet()) {
             Asset asset = entry.getValue();
-            asset.listAsset();
-            System.out.println();
+
+            double value = asset.getAssetCurrentValue();
+            int barLength = (int) ((value / maxValue) * 50);
+            String bar = "█".repeat(barLength);
+            System.out.printf("%s %.2f", bar, value);
+            System.out.print(" - " + asset.getAssetName() + "\n\n");
+
         }
     }
+
 
     public boolean assetExists(int assetID) {
         return assets.containsKey(assetID);
     }
+
+
 
 }
