@@ -1,12 +1,14 @@
 public class Screen {
     private boolean loggedIn;
     private Database database;
+    private BankAccountDatabase bankDatabase;
     private Account currentAccount;
 
-    public Screen(Database database) {
+    public Screen(Database database, BankAccountDatabase bankDatabase) {
         this.database = database;
         loggedIn = false;
         currentAccount = null;
+        this.bankDatabase = bankDatabase;
     }
 
     public boolean isLoggedIn() {
@@ -56,6 +58,10 @@ public class Screen {
 
     public Database getDatabase(){
         return database;
+    }
+
+    public BankAccountDatabase getBankDatabase(){
+        return bankDatabase;
     }
 
 
