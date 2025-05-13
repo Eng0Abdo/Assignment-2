@@ -1,7 +1,22 @@
+/**
+ * Main controller class handling CLI menus and navigation
+ * Orchestrates all user interactions
+ *
+ * @author Abdelrahman Emad, Mahmoud Mohamed, Peter Gerges
+ * @version 1.3
+ */
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Application {
+
+    /**
+     * Displays asset management menu
+     *
+     * @param portfolio User's investment portfolio
+     */
+
     Screen screen;
     Scanner sc;
 
@@ -10,8 +25,8 @@ public class Application {
         sc = new Scanner(System.in);
     }
 
-    public void run(){
-        while (true){
+    public void run() {
+        while (true) {
             int choice = getChoice();
             switch (choice) {
                 case 1:
@@ -145,13 +160,13 @@ public class Application {
     }
 
 
-    private void dashboardPanel(){
+    private void dashboardPanel() {
 
         int service = getService();
-        while (service != -1){
+        while (service != -1) {
             Portfolio portfolio = screen.getCurrentAccount().getPortfolio();
 
-            switch (service){
+            switch (service) {
                 case 1:
                     portfolio.listAssets();
                     break;
@@ -180,7 +195,13 @@ public class Application {
 
     }
 
-    public void displayLinkedBankAccounts(){
+    /**
+     * Handles bank account linking flow
+     *
+     * @throws InputMismatchException for invalid card inputs
+     */
+
+    public void displayLinkedBankAccounts() {
         screen.getCurrentAccount().displayLinkedBankAccounts();
     }
 
@@ -218,13 +239,12 @@ public class Application {
     }
 
 
-
     public void ZakatCalculation(Portfolio portfolio) {
         System.out.println("\nZakat Calculation: ");
         System.out.println(portfolio.calculateZakat());
     }
 
-    private void addAsset(Portfolio portfolio){
+    private void addAsset(Portfolio portfolio) {
         sc.nextLine();
         System.out.println("\n--- Add New Asset ---");
 
@@ -355,5 +375,4 @@ public class Application {
     }
 
 
-    
 }

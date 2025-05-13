@@ -1,3 +1,11 @@
+/**
+ * Handles serialization/deserialization of user accounts
+ * Uses Java Object Serialization to .db files
+ *
+ * @author Abdelrahman Emad, Mahmoud Mohamed, Peter Gerges
+ * @version 1.1
+ */
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -5,8 +13,15 @@ import java.io.Serializable;
 import java.util.List;
 
 
-
 public class Database {
+
+    /**
+     * Checks if account exists
+     *
+     * @param username Case-sensitive username
+     * @param password Plaintext password
+     * @return true if exact match found
+     */
 
     private List<Account> accountList;
     private File databaseFile;
@@ -24,6 +39,12 @@ public class Database {
         }
         return false;
     }
+
+    /**
+     * Persists all accounts to disk
+     *
+     * @throws IOException if file write fails
+     */
 
     public void createAccount(String username, String password) {
         if (!accountExists(username, password)) {

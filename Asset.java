@@ -1,5 +1,25 @@
+/**
+ * Represents a single investment asset
+ * Implements Serializable for portfolio storage
+ *
+ * @author Abdelrahman Emad, Mahmoud Mohamed, Peter Gerges
+ * @version 1.1
+ */
+
 import java.io.Serializable;
-class Asset implements Serializable{
+
+class Asset implements Serializable {
+    /**
+     * Creates a new asset
+     *
+     * @param assetName Display name
+     * @param purchasePrice Historical cost basis
+     * @param currentValue Market value
+     * @param type Asset classification
+     * @param assetID Unique identifier
+     * @param amount Quantity held
+     */
+
     private int assetID;
     private String assetName;
     private double assetPurchasePrice;
@@ -30,7 +50,7 @@ class Asset implements Serializable{
         System.out.println("Asset profit: " + (assetPurchasePrice - assetCurrentValue));
     }
 
-    public double  getAssetCurrentValue() {
+    public double getAssetCurrentValue() {
         return assetCurrentValue;
     }
 
@@ -41,6 +61,15 @@ class Asset implements Serializable{
         this.assetType = assetType;
         this.amount = assetAmount;
     }
+
+    /**
+     * Prints formatted asset summary
+     * Example Output:
+     * ----- Asset Summary -----
+     * Name: Tesla Stock
+     * Type: Stock
+     * Profit/Loss: +$1500
+     */
 
     public void listAsset() {
         System.out.println("----- Asset Summary -----");
